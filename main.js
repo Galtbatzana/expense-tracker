@@ -46,6 +46,7 @@ app.get("/categories/list", (req, res)=> {
 // herev 1 shirhegiig awya gewel
 app.get("/categories/:id", (req, res)=> {
   const { id } = req.params;
+  const categories = categories.find((cat.id === id))
   res.json(categories);
 });
 
