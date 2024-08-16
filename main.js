@@ -43,6 +43,12 @@ app.get("/categories/list", (req, res)=> {
   res.json(categories);
 });
 
+// herev 1 shirhegiig awya gewel
+app.get("/categories/:id", (req, res)=> {
+  const { id } = req.params;
+  res.json(categories);
+});
+
 //////////////////////////////////////////////////
 
 // app.get("/categories/create", (req, res)=> {
@@ -55,11 +61,10 @@ app.get("/categories/list", (req, res)=> {
 // herev hussen zuilee, bichsen zuilee gargii gevel ingej bichne
 // data-gaa uuruu zohiogood tsaanaa hadgalj chadaj bn
 // !!! herev dahin davtagdashgui id: tai baiwal delete/edit hiih bolomjtoi bolno!!!!
-app.get("/categories/create", (req, res)=> {
-  const { name } = req.query;
-  categories.push ({ 
-    id: new Date().toISOString(),
-    name: name });
+
+app.post("/categories/", (req, res)=> {
+  const { name } = req.body;
+  categories.push ({ id: new Date().toISOString(),name: name });
   fs.writeFileSync("categories.json", JSON.stringify(categories)) //data.json dotor 
   res.json(["Success"]);
 ;})
@@ -69,8 +74,9 @@ app.get("/categories/create", (req, res)=> {
 ////////////////////////////////////////
 // UPDATE HIIH !!!
 
-app.get("/categories/update", (req, res)=> {
-  const {id, name} = req.query;
+app.put("/categories/:id", (req, res)=> {
+  const { id } = req.params;
+  const { name } = req.body;
   const index = categories.findIndex((cat)=>(cat.id===id));
   categories[index].name = name;
   fs.writeFileSync("categories.json", JSON.stringify(categories))
@@ -80,8 +86,8 @@ app.get("/categories/update", (req, res)=> {
 ///////////////////////////////////////////
 // DELETE HIIH !!!
 
-app.get("/categories/delete", (req, res)=> {
-  const { id } = req.query;
+app.delete("/categories/:id", (req, res)=> {
+  const { id } = req.params;
   categories = categories.filter((cat)=>(cat.id !== id));
   fs.writeFileSync("categories.json", JSON.stringify(categories))
   res.json(["Success"]);
