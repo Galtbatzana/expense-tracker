@@ -1,72 +1,47 @@
-const express = require('express');
-const cors = require('cors');
-const fs = require('fs');
-const { v4: uuidv4 } = require('uuid');
 
-const app = express()
-const port = 4000
+const { startApp } = require('./configs/basic');
+const { getCategories, createNewCategory, getOneCategory, updateCategory, deleteCategory } = require('./services/categoryService');
 
-app.use(cors());
-app.use(express.json());  //backend-ees body awna//
+const app = startApp();
+//////////////////////////////////////////////////////////
+// app.get('/', (req, res) => {
+//   res.send('Hello World!')
+// })
 
-const content = fs.readFileSync("categories.json", "utf-8");
-// console.log({ content });
+// app.get('/articles', (req, res) => {
+//   // todo 
+//   // data base
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+//   res.json([
+//     {id: 1, title: 'Hello'}, 
+//     {id: 2, title: 'World'},
+//   ]);
+// })
 
-app.get('/articles', (req, res) => {
-  // todo 
-  // data base
-
-  res.json([
-    {id: 1, title: 'Hello'}, 
-    {id: 2, title: 'World'},
-  ]);
-})
-
-
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
-
+////////////////////////////////////////////////////////
+// RAM, FILE, REMOTE
 // C.R.U.D = Create, Read, Update, Delete 
 
 
-// RAM, FILE, REMOTE
-
-///////// Jijiglej bga function, tsoo shine category uusgedeg function hiilee ////////////////////////////
-async function createNewCategory(form) {
-  const id = uuidv4();
-  form.id = id; 
-  categories.push(form);
-  fs.writeFileSync("categories.json", JSON.stringify(categories));
-  return id;
-}
-
-function getCategories() {}
-function getOneCategory(id) {}
-function updateCategory(id, update) {}
-function deleteCategory(id) {}
-
-
-//categories dotor orj irsen string-iig zuw JSON bolgon hurwuulne.
-let categories = JSON.parse(content)
-
-// ene-iig unshuulahiin tuld 
-
+///////////////////////////////////////////////////////
 app.get("/categories", (req, res)=> {
+  const categories = getCategories();
   res.json(categories);
 });
 
+////////////////////////////////////////////////////////
 // herev 1 shirhegiig awya gewel
 app.get("/categories/:id", (req, res)=> {
   const { id } = req.params;
-  const categories = categories.find((cat.id === id))
-  res.json(categories);
+  const one = getOneCategory(id);
+  // if(id !== cat.id) {
+  //   res.status(404).json({massege: "Wrong id, try again!"})
+  //   return;
+  // }
+  // const categories = categories.find((cat.id === id))
+  res.json(one);
 });
-
+ 
 //////////////////////////////////////////////////
 
 // app.get("/categories/create", (req, res)=> {
@@ -93,32 +68,27 @@ app.post("/categories", async (req, res)=> {
 ////////////////////////////////////////
 // UPDATE HIIH !!!
 
-app.put("/categories/:id", (req, res)=> {
+app.put("/categories/:id", async (req, res)=> {
   const { id } = req.params;
   const { name } = req.body;
   if (!name) {
     res.status(404).json({message: "`Name` field is required!"});
     return;
   }
-  const index = categories.findIndex((cat)=>(cat.id===id));
-  categories[index].name = name;
-  fs.writeFileSync("categories.json", JSON.stringify(categories));
-  res.json(["Success"]);
+  await updateCategory(id, {name});
+  res.sendStatus(204);
 });
 
 ///////////////////////////////////////////
 // DELETE HIIH !!!
 
-app.delete("/categories/:id", (req, res)=> {
+app.delete("/categories/:id", async (req, res)=> {
   const { id } = req.params;
-  categories = categories.filter((cat)=> cat.id !== id);
-
-  if (deleteIndex < 0) {
-    res.sendStatus(404);
-    return;
-  }
-  categories = categories.filter((cat) => cat.id !== id);
-  fs.writeFileSync("categories.json", JSON.stringify(categories));
+  await deleteCategory(id);
+  // if (deleteIndex < 0) {
+  //   res.sendStatus(404);
+  //   return;
+  // }
   res.sendStatus(204);
 ;})
 
