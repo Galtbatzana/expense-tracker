@@ -22,9 +22,9 @@ function getOneCategory(id) {
   const categories = categories.find((cat.id === id))
 }
 ////////////////UPDATE//////////////////////////???
-async function updateCategory(id, {name}) {
+async function updateCategory(id, name) {
   const categories = getCategories();
-  const index = categories.findIndex((cat)=>(cat.id===id));
+  const index = categories.findIndex((cat)=>(cat.id == id));
   categories[index].name = name;
   fs.writeFileSync("data/categories.json", JSON.stringify(categories));
 }

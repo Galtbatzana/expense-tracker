@@ -75,7 +75,7 @@ app.put("/categories/:id", async (req, res)=> {
     res.status(404).json({message: "`Name` field is required!"});
     return;
   }
-  await updateCategory(id, {name});
+  await updateCategory(id, name);
   res.sendStatus(204);
 });
 
