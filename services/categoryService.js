@@ -1,5 +1,6 @@
 const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
+const { sql } = require('../configs/database');
 
 
 ///////// Jijiglej bga function, tsoo shine category uusgedeg function hiilee ////////////////////////////
@@ -47,20 +48,15 @@ const { v4: uuidv4 } = require('uuid');
 /////////////////////////////////////////////////////////////
 
 
-async function createCategory(input) {
-  const content = fs.writeFileSync("data/categories.json","utf-8");
-  const categories = JSON.parse(content);
+async function createCategory({name}) {
   const id = uuidv4();
-  form.id = id; 
-  categories.push({ ...input, id });
-  fs.writeFileSync("data/categories.json", JSON.stringify(categories));
+  await sql`insert into category(id, name) values (${id}, ${name})`;
   return id;
 }
 
 async function getCategories() {
-  const content = fs.readFileSync("data/categories.json", "utf-8");
-  const categories = JSON.parse(content);
-  return categories;
+  const list = await sql`select * from category`;
+  return list;
 }
 
 module.exports = {
