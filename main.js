@@ -1,14 +1,18 @@
-
 // const { startApp } = require('./configs/basic');
 // const { getCategories, createNewCategory, getOneCategory, updateCategory, deleteCategory } = require('./services/categoryService');
 
 // const app = startApp();
 
-
 const { app } = require("./configs/basic");
 const { sql } = require("./configs/database");
 
-const { getCategories, createCategory} = require('./services/categoryService');
+const {
+  getCategories,
+  createCategory,
+  getOneCategories,
+  deleteOneCategory,
+  updateOneCategories,
+} = require("./services/categoryService");
 
 //////////////////////////////////////////////////////////
 // app.get('/', (req, res) => {
@@ -16,19 +20,18 @@ const { getCategories, createCategory} = require('./services/categoryService');
 // })
 
 // app.get('/articles', (req, res) => {
-//   // todo 
+//   // todo
 //   // data base
 
 //   res.json([
-//     {id: 1, title: 'Hello'}, 
+//     {id: 1, title: 'Hello'},
 //     {id: 2, title: 'World'},
 //   ]);
 // })
 
 ////////////////////////////////////////////////////////
 // RAM, FILE, REMOTE
-// C.R.U.D = Create, Read, Update, Delete 
-
+// C.R.U.D = Create, Read, Update, Delete
 
 ///////////////////////////////////////////////////////
 // app.get("/categories", (req, res)=> {
@@ -43,14 +46,13 @@ const { getCategories, createCategory} = require('./services/categoryService');
 //   const one = getOneCategory(id);
 //   res.json(one);
 // });
- 
+
 //////////////////////////////////////////////////
 
 // app.get("/categories/create", (req, res)=> {
 //   categories.push({ name: "New Categories" });
 //   res.json(["Success"]);
 // ;})
-
 
 ////////////////////////////////////////////////////
 // herev hussen zuilee, bichsen zuilee gargii gevel ingej bichne
@@ -102,12 +104,34 @@ app.get("/categories", async (req, res) => {
   const list = await getCategories();
   res.json(list);
 });
-
+/////////////GET ONE////////////////////////////////
+app.get("/categories/:id", async (req, res) => {
+  const { id } = req.params;
+  const one = await getOneCategories(id);
+  if (!one) {
+    res.status(404).json({ message: "Not found!" });
+    return;
+  }
+  res.json(one);
+});
+/////////////////DELETE DATA//////////////////////
+app.delete("/categories/:id", async (req, res) => {
+  const { id } = req.params;
+  await deleteOneCategory(id);
+  res.status(201).json("success");
+});
+//////////////EDIT DATA///////////////////////////
+app.put("/categories/:id", async (req, res) => {
+  const { id } = req.params;
+  const input = req.body;
+  await updateOneCategories(id, input);
+  res.status(204).json("success");
+});
 ///////////////////POST////////////////////////////
 app.post("/categories", async (req, res) => {
   const input = req.body;
   const id = await createCategory(input);
-  res.status(201).json({id});
+  res.status(201).json({ id });
 });
 
 ///////////////TEST////////////////////////
@@ -117,4 +141,3 @@ app.get("/dbtest", async (req, res) => {
   console.log(result);
   res.json({ result });
 });
-
