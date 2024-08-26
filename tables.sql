@@ -6,6 +6,12 @@ CREATE TABLE category (
   name TEXT NOT NULL
 )
 
+ALTER TABLE category 
+  ADD COLUMN color varchar, 
+  ADD COLUMN icon varchar;
+ 
+
+
 SELECT id, name FROM category;
 SELECT * FROM category;
 

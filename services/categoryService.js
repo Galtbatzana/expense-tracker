@@ -44,17 +44,17 @@ const { sql } = require("../configs/database");
 // }
 
 ///////////////////CREAT DATA//////////////////////////////////
-async function createCategory({ name }) {
+async function createCategory({ name, icon, color }) {
   const id = uuidv4();
-  await sql`insert into category(id, name) values (${id}, ${name})`;
+  await sql`insert into category(id, name) values (${id}, ${name}, ${icon}, ${color})`;
   return id;
 }
-///////////////////////////GET ALL DATA///////////////////////////
+///////////////////////////GET ALL DATA////////////////////////
 async function getCategories() {
   const list = await sql`select * from category`;
   return list;
 }
-///////////////////GET ONE DATA///////////////////////////////////
+///////////////////GET ONE DATA////////////////////////////////
 async function getOneCategories(id) {
   const list = await sql`select * from category where id = ${id}`;
   if (list.length) {
@@ -62,15 +62,14 @@ async function getOneCategories(id) {
   }
   return null;
 }
-////////////////////DELETE DATA//////////////////////////////////
+////////////////////DELETE DATA////////////////////////////////
 async function deleteOneCategory(id) {
   await sql`DELETE FROM category WHERE id=${id}`;
 }
 
-////////////////////EDIT DATA///////////////////////////////////
-async function updateOneCategories(id, update) {
-  await sql`update category set name = ${update.name} where id = ${id}`;
-
+////////////////////EDIT DATA//////////////////////////////////
+async function updateOneCategories({id, name, icon, color}) {
+  await sql`update category set name = ${name}, icon = ${icon}, color = ${color} where id = ${id}`;
 }
 
 

@@ -136,8 +136,8 @@ app.post("/categories", async (req, res) => {
 
 ///////////////TEST////////////////////////
 
-app.get("/dbtest", async (req, res) => {
-  const result = await sql`select version()`;
-  console.log(result);
-  res.json({ result });
-});
+// app.get("/dbtest", async (req, res) => {
+//   const result = await sql`select version()`;
+//   console.log(result);
+//   res.json({ result });
+// });
