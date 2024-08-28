@@ -46,7 +46,7 @@ const { sql } = require("../configs/database");
 ///////////////////CREAT DATA//////////////////////////////////
 async function createCategory({ name, icon, color }) {
   const id = uuidv4();
-  await sql`insert into category(id, name) values (${id}, ${name}, ${icon}, ${color})`;
+  await sql`insert into category(id, name, icon, color) values (${id}, ${name}, ${icon}, ${color})`;
   return id;
 }
 ///////////////////////////GET ALL DATA////////////////////////
