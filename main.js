@@ -131,7 +131,13 @@ app.put("/categories/:id", async (req, res) => {
 app.post("/categories", async (req, res) => {
   const input = req.body;
   const id = await createCategory(input);
-  res.status(201).json({ id });
+  
+  if (id) {
+    res.status(201).json({ id });
+  }
+  else {
+    res.status(400);
+  }
 });
 
 ///////////////TEST////////////////////////

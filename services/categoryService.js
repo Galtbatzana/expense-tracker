@@ -45,10 +45,10 @@ const { sql } = require("../configs/database");
 
 ///////////////////CREAT DATA//////////////////////////////////
 async function createCategory({ name, icon, color }) {
-  const id = uuidv4();
-  console.log(icon,color)
-  await sql`insert into category(id, name, icon, color) values (${id}, ${name}, ${icon}, ${color})`;
-  return id;
+    const id = uuidv4();
+    await sql`insert into category(id, name, icon, color) values (${id}, ${name}, ${icon}, ${color})`;
+    return id;
+  
 }
 ///////////////////////////GET ALL DATA////////////////////////
 async function getCategories() {
@@ -68,11 +68,11 @@ async function deleteOneCategory(id) {
   await sql`DELETE FROM category WHERE id=${id}`;
 }
 
-////////////////////EDIT DATA//////////////////////////////////
+////////////////////UPDATE DATA//////////////////////////////////
 async function updateOneCategories(id, input) {
   const { name, icon, color } = input;
   await sql`update category set name = ${name}, icon = ${icon}, color = ${color} where id = ${id}`;
-  console.log({ icon, color });
+  // console.log({ icon, color });
 }
 
 module.exports = {
