@@ -127,7 +127,7 @@ app.put("/categories/:id", async (req, res) => {
   await updateOneCategories(id, input);
   res.status(204).json("success");
 });
-///////////////////POST////////////////////////////
+///////////////////Create////////////////////////////
 app.post("/categories", async (req, res) => {
   const input = req.body;
   const id = await createCategory(input);
