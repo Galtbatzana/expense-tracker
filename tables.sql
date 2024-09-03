@@ -15,6 +15,19 @@ ALTER TABLE category
 SELECT id, name FROM category;
 SELECT * FROM category;
 
+CREATE TYPE transactionType AS ENAM ('INCOME', 'EXPENSE');
+CREATE TABLE transaction (
+  id char(36) PRIMARY KEY,
+  amount decimal (10,2),
+  categoryID char (36),
+  type transactionType,
+  date DATE,
+  payee varchar (36),
+  note TEXT
+  FOREIGN KEY (categoryID) REFERENCES category(id)
+)
+
+
 
 
 
