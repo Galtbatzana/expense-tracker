@@ -15,7 +15,8 @@ ALTER TABLE category
 SELECT id, name FROM category;
 SELECT * FROM category;
 
-CREATE TYPE transactionType AS ENAM ('INCOME', 'EXPENSE');
+DROP TABLE transaction;
+CREATE TYPE transactionType AS ENUM ('INCOME', 'EXPENSE');
 CREATE TABLE transaction (
   id char(36) PRIMARY KEY,
   amount decimal (10,2),
@@ -23,13 +24,14 @@ CREATE TABLE transaction (
   type transactionType,
   date DATE,
   payee varchar (36),
-  note TEXT
+  note TEXT,
   FOREIGN KEY (categoryID) REFERENCES category(id)
 )
 
+insert into transaction values ('Tsenguune', 1000, '2723a4a2-c73d-4687-88db-55803d44a606', 'INCOME', CURRENT_DATE, 'Batzorig', 'uruu tuluv'); 
 
 
-
+SELECT transaction.amount, category.name, category.icon, transaction.type from transaction left join category on transaction.categoryID = category.id  
 
 
 INSERT INTO playing_with_neon(name, value)
