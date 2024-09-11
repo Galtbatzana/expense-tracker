@@ -14,6 +14,8 @@ const {
   updateOneCategories,
 } = require("./services/categoryService");
 
+const { createTransactions } =require("./services/transactionService");
+
 //////////////////////////////////////////////////////////
 // app.get('/', (req, res) => {
 //   res.send('Hello World!')
@@ -147,3 +149,17 @@ app.post("/categories", async (req, res) => {
 //   console.log(result);
 //   res.json({ result });
 // });
+
+//////////////CreateTransaction///////////////////////////
+
+app.post("/transactions", async (req, res) => {
+  const input = req.body;
+  const id = await createTransactions(input);
+
+  if (id) {
+    res.status(201).json({ id });
+  }
+  else {
+    res.status(400);
+  }
+});
