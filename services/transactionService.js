@@ -2,20 +2,22 @@ const fs = require("fs");
 const { v4: uuidv4 } = require("uuid");
 const { sql } = require("../configs/database");
 
-async function createTransaction() {
+async function createTransaction(input) {
   //   const { name } = newTransaction;
 
-  const input = {
+  const input1 = {
     id: uuidv4(),
     amount: 1000,
     type: "EXPENSE",
+    payee: "Sarnai",
   };
 
-  // await sql`insert into transaction(id, amount, categoryID, type, date, payee, note) values (${id}, ${name}, ${icon}, ${color})`;
+  //   const columns = Object.keys(input).join(", ");
 
-  const columns = Object.keys(input).join(", ");
+  await sql`insert into transaction ${sql(input1, Object.keys(input1))}`;
 
-  console.log({ columns });
+  //   console.log({ columns });
+  return "";
 }
 
 module.exports = {

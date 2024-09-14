@@ -152,8 +152,8 @@ app.post("/categories", async (req, res) => {
 //////////////CreateTransaction///////////////////////////
 
 app.post("/transactions", async (req, res) => {
-  const newTransaction = req.body;
-  const id = await createTransaction();
+  const input = req.body;
+  const id = await createTransaction(input);
 
   if (id) {
     res.status(201).json({ id });
