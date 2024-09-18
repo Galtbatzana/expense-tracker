@@ -14,7 +14,7 @@ const {
   updateOneCategories,
 } = require("./services/categoryService");
 
-const { createTransaction } = require("./services/transactionService");
+const { createTransaction, getTransaction, getOneTransaction, deleteOneTransaction, updateOneTransaction } = require("./services/transactionService");
 
 //////////////////////////////////////////////////////////
 // app.get('/', (req, res) => {
@@ -141,16 +141,35 @@ app.post("/categories", async (req, res) => {
   }
 });
 
-///////////////TEST////////////////////////
-
-// app.get("/dbtest", async (req, res) => {
-//   const result = await sql`select version()`;
-//   console.log(result);
-//   res.json({ result });
-// });
-
+/////////////////////GetAll//////////////////////////////////
+app.get("/transaction", async (req, res) => {
+  const list = await getTransaction();
+  res.json(list);
+});
+/////////////GET ONE////////////////////////////////
+app.get("/transaction/:id", async (req, res) => {
+  const { id } = req.params;
+  const one = await getOneTransaction(id);
+  if (!one) {
+    res.status(404).json({ message: "Not found!" });
+    return;
+  }
+  res.json(one);
+});
+/////////////////DELETE DATA//////////////////////
+app.delete("/transaction/:id", async (req, res) => {
+  const { id } = req.params;
+  await deleteOneTransaction(id);
+  res.status(201).json("success");
+});
+//////////////EDIT DATA///////////////////////////
+app.put("/transaction/:id", async (req, res) => {
+  const { id } = req.params;
+  const input = req.body;
+  await updateOneTransaction(id, input);
+  res.status(204).json("success");
+});
 //////////////CreateTransaction///////////////////////////
-
 app.post("/transactions", async (req, res) => {
   const input = req.body;
   const id = await createTransaction(input);
