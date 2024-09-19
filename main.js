@@ -14,7 +14,13 @@ const {
   updateOneCategories,
 } = require("./services/categoryService");
 
-const { createTransaction, getTransaction, getOneTransaction, deleteOneTransaction, updateOneTransaction } = require("./services/transactionService");
+const {
+  createTransaction,
+  getTransaction,
+  getOneTransaction,
+  deleteOneTransaction,
+  updateOneTransaction,
+} = require("./services/transactionService");
 
 //////////////////////////////////////////////////////////
 // app.get('/', (req, res) => {
@@ -97,11 +103,11 @@ const { createTransaction, getTransaction, getOneTransaction, deleteOneTransacti
 //   // }
 //   res.sendStatus(204);
 // ;})
+/////////////////////////////////////////////////
 
-//////////////////////////////////////////////////////////////////////
-/////////////////jinhen database-tei holbogdoh///////////////////////
+////////jinhen database-tei holbogdoh///////////////
 
-////////////GET/////////////////////////////////////////////////////
+////////////GET//////////////////////////////////
 app.get("/categories", async (req, res) => {
   const list = await getCategories();
   res.json(list);
@@ -171,12 +177,44 @@ app.put("/transaction/:id", async (req, res) => {
 });
 //////////////CreateTransaction///////////////////////////
 app.post("/transactions", async (req, res) => {
-  const input = req.body;
-  const id = await createTransaction(input);
+  const input1 = req.body;
+  const id = await createTransaction(input1);
 
   if (id) {
     res.status(201).json({ id });
   } else {
     res.status(400);
   }
+});
+
+//////////////GetAllTransaction////////////////
+app.get("/transactions", async (req, res) => {
+  const list = await getTransaction();
+  res.json(list);
+});
+
+/////////GetOneTransaction////////////////
+app.get("/transactions/:id", async (req, res) => {
+  const id = req.params;
+  const one = await getOneTransaction(id);
+  if (!one) {
+    res.status(404).json({ message: "Not found!" });
+    return;
+  }
+  res.json(one);
+});
+
+//////////UpdateTransaction///////////////////
+app.put("/transactions/:id", async (req, res) => {
+  const { id } = req.params;
+  const input = req.body;
+  await updateOneTransaction(id, input);
+  res.status(204).json("success");
+});
+
+////////DeleteTransaction//////////////////
+app.delete("/transactions/:id", async (req, res) => {
+  const { id } = req.params;
+  await deleteTransaction(id);
+  res.status(201).json("success");
 });

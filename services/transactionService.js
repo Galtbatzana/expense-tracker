@@ -2,16 +2,14 @@ const fs = require("fs");
 const { v4: uuidv4 } = require("uuid");
 const { sql } = require("../configs/database");
 
-async function createTransaction(input) {
-  //   const { name } = newTransaction;
-
+////////////////////////////////////////////////////////
+async function createTransaction() {
   const input1 = {
     id: uuidv4(),
-    amount: 1000,
+    amount: 2000,
     type: "EXPENSE",
-    payee: "Sarnai",
+    payee: "Naraa",
   };
-
   //   const columns = Object.keys(input).join(", ");
 
   await sql`insert into transaction ${sql(input1, Object.keys(input1))}`;
@@ -21,7 +19,7 @@ async function createTransaction(input) {
 
 async function getTransaction() {
   const list = await sql`select * from transaction`;
-  return list; 
+  return list;
 }
 
 async function getOneTransaction(id) {
@@ -41,7 +39,6 @@ async function updateOneTransaction(id, input) {
   await sql`update transaction set name = ${name}, icon = ${icon}, color = ${color} where id = ${id}`;
   // console.log({ icon, color });
 }
-
 
 module.exports = {
   createTransaction,
